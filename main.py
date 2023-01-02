@@ -3,6 +3,8 @@ from elevation import HighestElevationLocator
 from nearest_ITN import IntegratedTransportNetwork
 from path import ShortestPath
 import time
+import pandas as pd
+import geopandas as gpd
 
 def main():
 
@@ -39,16 +41,43 @@ def main():
     print('nearest itn to evacuation points', nearest_node_evacu_points_fid)
 
 
+
+    # Task 4
+    # Numbers of schemes
+    user_num = len(nearest_node_user_input_fid)
+    evacu_num = len(nearest_node_evacu_points_fid)
+    user_id = list(range(user_num))
+    evacu_id = list(range(evacu_num))
+
+    # Build compound indexes
+    index = pd.MultiIndex.from_product([user_id, evacu_id])
+    path_df = pd.DataFrame(index=index, columns=['path_fid'])
+
+
+
     # create graph and find the shortest paths
     # there may be multiple solutions
+
+    '''
     shortest_path_list = []
     for user_itn_fid in nearest_node_user_input_fid:
         for evacu_itn_fid in nearest_node_evacu_points_fid:
             shortest_path_list.append(ShortestPath(itn_file_path, dem_path).find_path(user_itn_fid, evacu_itn_fid)[1])
     graph = ShortestPath(itn_file_path, dem_path).find_path(user_itn_fid, evacu_itn_fid)[0]
     print('ready for plotting')
+    '''
+    sp = ShortestPath(itn_file_path, dem_path)
+    for i, user_itn_fid in enumerate(nearest_node_user_input_fid):
+        for j, evacu_itn_fid in enumerate(nearest_node_evacu_points_fid):
+            path = sp.find_path(user_itn_fid, evacu_itn_fid)
+            path_df.loc[(i, j), 'path_fid'] = path
+
+    print('The paths are:', path_df)
+
     t3 = time.time()
     print(t3 - t2)
 
+
 if __name__ == '__main__':
     main()
+

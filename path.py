@@ -15,7 +15,7 @@ class ShortestPath(object):
         self.itn_nodes = itn_data['roadnodes']
         self.itn_links = itn_data['roadlinks']
 
-    def add_cols_to_itnlink_vertices(self):
+    def add_keys_to_itnlink_vertices(self):
         # adding colums: start_coords, end_coords, elev_diff, walking_time to itn_links
         # which are necessary for weight calculation of graph edges
 
@@ -45,7 +45,7 @@ class ShortestPath(object):
     def find_path(self, user_itn_fid, evacu_itn_fid):
 
         # update itn_links
-        updated_itn_links = self.add_cols_to_itnlink_vertices()
+        updated_itn_links = self.add_keys_to_itnlink_vertices()
 
         # graph generating:
         g = nx.Graph()
@@ -55,4 +55,7 @@ class ShortestPath(object):
         # finding the shorest path by dijkstra:
         path = nx.dijkstra_path(g, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
 
-        return g, path
+        return path
+
+
+
