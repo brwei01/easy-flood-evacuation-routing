@@ -101,7 +101,7 @@ class ShortestPath(object):
             route(LineString)
             time(float)
         """
-        # g = self.gener_graph()
+        g = self.gener_graph()
         # g can be generated via gener_graph, but every query does not need to build a road network again"""
         g = nx.read_gexf("road_G.gexf")
         print('Whether the graph is connected: ', nx.is_connected(g))

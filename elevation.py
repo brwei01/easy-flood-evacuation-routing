@@ -4,6 +4,7 @@ from rasterio.mask import mask
 from shapely.geometry import mapping
 from rasterio import Affine
 import geopandas as gpd
+import pandas as pd
 from shapely.geometry import Point
 import numpy as np
 import os
@@ -35,7 +36,8 @@ class HighestElevationLocator(object):
         row, col, elev = self.data_extraction()
         T1 = out_transform * Affine.translation(0.5, 0.5)
         rc2xy = lambda r, c: (c, r) * T1
-        cell2points = gpd.GeoDataFrame({'col': col, 'row': row, 'elev': elev})
+        #cell2points = gpd.GeoDataFrame({'col': col, 'row': row, 'elev': elev})
+        cell2points = pd.DataFrame({'col': col, 'row': row, 'elev': elev})
         cell2points['x'] = cell2points.apply(lambda row: rc2xy(row.row, row.col)[0], axis=1)
         cell2points['y'] = cell2points.apply(lambda row: rc2xy(row.row, row.col)[1], axis=1)
         return cell2points

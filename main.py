@@ -2,17 +2,22 @@ from input import User_Input
 from elevation import HighestElevationLocator
 from nearest_ITN import IntegratedTransportNetwork
 from path import ShortestPath
+import time
 
 def main():
+
     # user input and study area generation
     user_input, study_area = User_Input().input()
     print("user's location is:", user_input)
     # Plotter().show_rim(study_area)
 
     # generating cell values in study area
+    t1 = time.time()
     dem_path = 'Material/elevation/SZ.asc'
     evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
     print("evacuation point is:", evacu_points)
+    t2 = time.time()
+    print(t2-t1)
 
     # finding the nearest ITNs for user location and evacuation point
     itn_file_path = 'Material/itn/solent_itn.json'
@@ -42,6 +47,8 @@ def main():
             shortest_path_list.append(ShortestPath(itn_file_path, dem_path).find_path(user_itn_fid, evacu_itn_fid)[1])
     graph = ShortestPath(itn_file_path, dem_path).find_path(user_itn_fid, evacu_itn_fid)[0]
     print('ready for plotting')
+    t3 = time.time()
+    print(t3 - t2)
 
 if __name__ == '__main__':
     main()

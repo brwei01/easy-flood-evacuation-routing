@@ -5,18 +5,23 @@ from nearest_ITN import IntegratedTransportNetwork
 from shortestpath import ShortestPath
 import pandas as pd
 import geopandas as gpd
+import time
 
 
 def main():
+
     # user input and study area generation
     user_input, study_area = User_Input().input()
     print("user's location is:", user_input)
     # Plotter().show_rim(study_area)
 
+    t1 = time.time()
     # generating cell values in study area
     dem_path = 'Material/elevation/SZ.asc'
     evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
     print("evacuation point is:", evacu_points)
+    t2 = time.time()
+    print(t2 - t1)
 
     # finding the nearest ITNs for user location and evacuation point
     itn_file_path = 'Material/itn/solent_itn.json'
@@ -30,12 +35,16 @@ def main():
     print('nearest itn to evacuation points', nearest_node_evacu_points)
     '''
 
+
+
+
     nearest_node_user_input_fid = IntegratedTransportNetwork(itn_file_path, user_input).get_nearest_node_fid()
     print('nearest itn to user location:', nearest_node_user_input_fid)
     nearest_node_evacu_points_fid = []
     for evacu_point in evacu_points:  # multiple solutions may exist
         nearest_node_evacu_points_fid += IntegratedTransportNetwork(itn_file_path, evacu_point).get_nearest_node_fid()
     print('nearest itn to evacuation points', nearest_node_evacu_points_fid)
+
 
     # create graph and find the shortest paths
     # there may be multiple solutions
@@ -63,10 +72,13 @@ def main():
     for i, user_itn_fid in enumerate(nearest_node_user_input_fid):
         for j, evacu_itn_fid in enumerate(nearest_node_evacu_points_fid):
             route, _ = sp.find_nearest_route_and_time(user_itn_fid, evacu_itn_fid)
-            path = sp.turn_route_to_LineString(route)
+            path = sp.turn_route_to_linestring(route)
             path_gdf.loc[(i, j), 'geometry'] = path
 
     print('The path is:', path_gdf)
+    t3 = time.time()
+    print(t3 - t2)
+
     path_gdf.plot()
     
 
