@@ -51,7 +51,7 @@ def main():
 
     # Build compound indexes
     index = pd.MultiIndex.from_product([user_id, evacu_id])
-    path_gdf = gpd.GeoDataFrame(index=index, columns=['path_fid', 'path_geom', 'walking_time'], crs='EPSG:27700')
+    path_gdf = gpd.GeoDataFrame(index=index, columns=['path_fid', 'path_geom', 'walking_time'])
 
     sp = ShortestPath(itn_file_path, dem_path)
     for i, user_itn_fid in enumerate(nearest_node_user_input_fid):
@@ -62,12 +62,13 @@ def main():
             path_gdf.loc[(i, j), 'path_fid'] = path_link
             path_gdf.loc[(i, j), 'path_geom'] = path_geom
             path_gdf.loc[(i, j), 'walking_time'] = path_time
-
-    print(path_gdf)
+    path_gdf = path_gdf.set_geometry('path_geom')
+    path_gdf = path_gdf.set_crs('EPSG:27700')
 
     min_walking_time = min(path_gdf['walking_time'])
     # this is for final plotting, plot this!
     final_decision_path = path_gdf.loc[path_gdf['walking_time'] == min_walking_time]
+
     print(f'The path is {final_decision_path["path_fid"]}')
     print(f'The total walking time is {final_decision_path["walking_time"]} minutes')
 

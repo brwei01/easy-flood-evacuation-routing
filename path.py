@@ -1,7 +1,7 @@
 import rasterio
 import networkx as nx
 import json
-from shapely.geometry import LineString
+from shapely.geometry import LineString, MultiLineString
 
 
 class ShortestPath(object):
@@ -73,6 +73,8 @@ class ShortestPath(object):
             time += graph.edges[first_node, node]['weight']
             geom.append(LineString(self.itn_links[link_fid]['coords']))
             first_node = node
+
+        geom = MultiLineString(geom)
 
         return links, geom, time
 
