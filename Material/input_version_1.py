@@ -47,7 +47,6 @@ class User_Input(object):
                 except Out_of_Island_Area_Error:
                     print('Might be a mistake! Input location not on Island')
                     proceed = self.proceed_judgement()
-                    70
 
                 # if on island but out of study area
                 except Out_of_Map_Range_Error:
