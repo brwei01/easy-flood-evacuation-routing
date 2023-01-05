@@ -28,11 +28,13 @@ class HighestElevationLocator(object):
         # print(out_image.shape)
         max_elev = out_image[0].max()
         evacu_cell_idx = np.where(out_image[0] == max_elev)
+        evacu_cell_row_idx = evacu_cell_idx[0]
+        evacu_cell_col_idx = evacu_cell_idx[1]
         # multiple solutions may be returned from the last line
         evacu_points = []
-        for idx in evacu_cell_idx:
-            row, col = idx[1], idx[0]
-            evacu_points.append([row, col] * out_transform)
+        for i in range(len(evacu_cell_row_idx)):
+            row, col = evacu_cell_row_idx[i], evacu_cell_col_idx[i]
+            evacu_points.append([col, row] * out_transform)
 
         print(f'the max elevation is: {max_elev}')
         return evacu_points

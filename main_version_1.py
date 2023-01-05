@@ -29,14 +29,14 @@ def main():
         # finding the nearest ITNs for user location and evacuation point
         itn_file_path = 'Material/itn/solent_itn.json'
 
-        '''
+
         nearest_node_user_input = IntegratedTransportNetwork(itn_file_path, user_input).get_nearest_node_coords()
         print('nearest itn to user location:', nearest_node_user_input)
         nearest_node_evacu_points = []
         for evacu_point in evacu_points:  # multiple solutions may exist
             nearest_node_evacu_points += IntegratedTransportNetwork(itn_file_path, evacu_point).get_nearest_node_coords()
         print('nearest itn to evacuation points', nearest_node_evacu_points)
-        '''
+
 
         nearest_node_user_input_fid = IntegratedTransportNetwork(itn_file_path, user_input).get_nearest_node_fid()
         print('nearest itn to user location:', nearest_node_user_input_fid)
