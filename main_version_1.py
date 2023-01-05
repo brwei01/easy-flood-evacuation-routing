@@ -22,7 +22,7 @@ def main():
         dem_path = 'Material/elevation/SZ.asc'
         evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
         '''
-        print("evacuation point is:", evacu_points)
+        print("evacuation points are:", evacu_points)
         t2 = time.time()
         print(t2-t1)
 
@@ -75,7 +75,7 @@ def main():
         # this is for final plotting, plot this!
         final_decision_path = path_gdf.loc[path_gdf['walking_time'] == min_walking_time]
         print(f'The path is {final_decision_path["path_fid"]}')
-        print(f'The total walking time is {final_decision_path["walking_time"]} minutes')
+        print(f'The total walking time is {int(final_decision_path["walking_time"].values)} minutes')
 
         t4 = time.time()
         print(t4 - t3)
