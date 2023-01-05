@@ -1,6 +1,6 @@
 from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
-from nearest_ITN import IntegratedTransportNetwork
+from nearest_ITN_version_1 import IntegratedTransportNetwork
 from path import ShortestPath
 import time
 import pandas as pd
@@ -17,9 +17,7 @@ def main():
         # generating cell values in study area
         t1 = time.time()
         dem_path = 'Material/elevation/SZ.asc'
-        HE = HighestElevationLocator(dem_path, study_area)
-        masked_image_path = HE.data_extraction()
-        evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator(masked_image_path)
+        evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
         '''
         dem_path = 'Material/elevation/SZ.asc'
         evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()

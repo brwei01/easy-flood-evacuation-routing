@@ -22,32 +22,16 @@ class HighestElevationLocator(object):
             out_image, out_transform = mask(src, geoms, crop=True)
         return out_image, out_transform
 
-    def data_extraction(self):
-        with rasterio.open(self.dem_path, 'r') as src:
-            out_meta = src.meta.copy()
-            out_image, out_transform = self.masking()
-            out_meta.update({
-                'driver': 'AAIGrid'
-                , 'height': out_image.shape[1]
-                , 'width': out_image.shape[2]
-                , 'transform': out_transform
-            })
+    def highest_locator(self):
 
-            root = os.path.dirname(os.getcwd())
-            out_file_path = os.path.join(root, 'Material', 'outputs', 'masked_raster.asc')
-            with rasterio.open(out_file_path, 'w', **out_meta) as out_file:
-                out_file.write(out_image)
-
-        return out_file_path
-
-    def highest_locator(self, masked_image_path):
         evacu_points = []
-        with rasterio.open(masked_image_path, 'r') as masked_raster:
-            band_data = masked_raster.read(1)  # this is in type array
-            evacu_cell = np.where(band_data == band_data.max())
-            evacu_point_xy = masked_raster.xy(evacu_cell[0], evacu_cell[1])
-            evacu_point = Point(evacu_point_xy[0][0], evacu_point_xy[1][0])
-            evacu_points.append((evacu_point.x, evacu_point.y))
+        out_image, out_transform = self.masking()
+        max_elev = out_image.max()
+        evacu_cell_idx = np.where(out_image == max_elev)
+        row, col = evacu_cell_idx[1], evacu_cell_idx[0]
+        evacu_point_coords = [row, col] * out_transform
+        evacu_points.append(tuple(evacu_point_coords))
+        print(f'the max elevation is: {max_elev}')
 
         return evacu_points
 

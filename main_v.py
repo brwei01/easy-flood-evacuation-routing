@@ -1,6 +1,6 @@
 from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
-from nearest_ITN import IntegratedTransportNetwork
+from nearest_ITN_version_1 import IntegratedTransportNetwork
 # from path import ShortestPath
 from shortestpath import ShortestPath
 import pandas as pd
