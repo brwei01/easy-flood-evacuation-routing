@@ -42,6 +42,7 @@ class IntegratedTransportNetwork:
         x, y = self.input_point
         node = (x, y)
         node_idx_list = list(self.itn_idx.nearest(node, num_results=1))
+        #node_idx_list = [x for x in (self.itn_idx.nearest(node, num_results=1))]
         for i in node_idx_list:
             nearest_node_fid.append(self.itn_nodes_dict.get(i))
         return nearest_node_fid

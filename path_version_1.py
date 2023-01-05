@@ -3,7 +3,7 @@ import networkx as nx
 import json
 from shapely.geometry import Point, LineString, MultiLineString
 
-class ShortestPath(object):
+class DataManipulation(object):
 
     def __init__(self, itn_file_path, dem_path):
 
@@ -46,36 +46,47 @@ class ShortestPath(object):
                 total_time += additional_time
             details['walking_time'] = total_time
 
+
         return self.itn_links
 
-    def graph_gen(self):
 
+    def graph_gen(self):
         '''generate graph'''
         updated_itn_links = self.add_keys_to_itnlink_vertices()
-        g = nx.Graph()
+        graph = nx.Graph()
         for link_fid, details in updated_itn_links.items():
-            g.add_edge(details['start'], details['end'], fid=link_fid, weight=details['walking_time'])
-        return g
+            graph.add_edge(details['start'], details['end'], fid=link_fid, weight=details['walking_time'])
+        return graph
+
+
+class ShortestPath(object):
+    def __init__(self, itn_file_path, dem_path):
+        self.itn_file_path = itn_file_path
+        self.dem_path = dem_path
+
+        with open(itn_file_path, 'r') as f:
+            itn_data = json.load(f)
+        self.itn_nodes = itn_data['roadnodes']
+        self.itn_links = itn_data['roadlinks']
+
+        DM = DataManipulation(self.itn_file_path, self.dem_path)
+        self.graph = DM.graph_gen()
 
     def find_path(self, user_itn_fid, evacu_itn_fid):
-
-        g = self.graph_gen()
         # finding the shorest path by dijkstra:
-        path = nx.dijkstra_path(g, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
+        path = nx.dijkstra_path(self.graph, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
         # time = nx.dijkstra_path_length(g, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
-
         return path
 
     def path_to_linestring(self, path):
-        graph = self.graph_gen()
         links = []
         geom = []
         time = 0
         first_node = path[0]
         for node in path[1:]:
-            link_fid = graph.edges[first_node, node]['fid']
+            link_fid = self.graph.edges[first_node, node]['fid']
             links.append(link_fid)
-            time += graph.edges[first_node, node]['weight']
+            time += self.graph.edges[first_node, node]['weight']
             geom.append(LineString(self.itn_links[link_fid]['coords']))
             first_node = node
 

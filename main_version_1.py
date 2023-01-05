@@ -1,7 +1,7 @@
 from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
 from nearest_ITN_version_1 import IntegratedTransportNetwork
-from path import ShortestPath
+from path_version_1 import ShortestPath
 import time
 import pandas as pd
 import geopandas as gpd
