@@ -101,4 +101,5 @@ class Study_Area(object):
     def get_island_boundary(self):
         polygons = []
         gdf = gpd.read_file('Material/shape/isle_of_wight.shp')
+        gdf.set_crs('EPSG:27700')
         return gdf['geometry'].values
