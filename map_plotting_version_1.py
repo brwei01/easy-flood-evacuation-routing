@@ -69,8 +69,8 @@ class MapPlotting(object):
 
         user_point.plot(ax=self.ax, color='red', markersize=3, zorder=3, label='User location')
         evacu_point.plot(ax=self.ax, color='blue', markersize=3, zorder=3, label='Highest point')
-        start_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='start point')
-        end_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='end point')
+        start_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='Start point')
+        end_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='End point')
 
         return
 
