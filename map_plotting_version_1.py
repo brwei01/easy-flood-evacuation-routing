@@ -47,6 +47,10 @@ class MapPlotting(object):
         return
 
     def add_points(self):
+        '''
+        这里可能还有点小问题
+        明天再说
+        '''
         self.start_point = geometry.Point(self.user_input[0], self.user_input[1])
         self.highest_point = geometry.Point(self.evacu_points[0][0], self.evacu_points[0][1])
 
