@@ -50,6 +50,7 @@ class MapPlotting(object):
         '''
         这里可能还有点小问题
         明天再说
+        要plot 两个itn
         '''
         self.start_point = geometry.Point(self.user_input[0], self.user_input[1])
         self.highest_point = geometry.Point(self.evacu_points[0][0], self.evacu_points[0][1])
@@ -79,7 +80,7 @@ class MapPlotting(object):
         self.ax.add_artist(ScaleBar(1, box_alpha=0.5))
 
     def add_elevation(self):
-        show(self.raster_img, ax=self.ax, zorder=1, cmap='YlGn', alpha=0.5, transform=self.out_transform)
+        show(self.raster_img, ax=self.ax, zorder=1, cmap='YlGn', alpha=0.7, transform=self.out_transform)
 
     def add_path(self):
         self.final_decision_path.plot(ax=self.ax, edgecolor='blue', linewidth=0.5, zorder=2, label='Path')
