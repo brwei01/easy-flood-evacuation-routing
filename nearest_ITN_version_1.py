@@ -37,19 +37,22 @@ class IntegratedTransportNetwork:
             self.itn_nodes_dict.update({node_count_no: node_id})
 
     def get_nearest_node_fid(self):
+
         # If distances are the same, may get more than one results
-        nearest_node_fid = []
         x, y = self.input_point
         node = (x, y)
         node_idx_list = list(self.itn_idx.nearest(node, num_results=1))
         #node_idx_list = [x for x in (self.itn_idx.nearest(node, num_results=1))]
-        for i in node_idx_list:
-            nearest_node_fid.append(self.itn_nodes_dict.get(i))
-        return nearest_node_fid
 
-    def get_nearest_node_coords(self):
+        nearest_node_fid_list = []
+        for i in node_idx_list:
+            nearest_node_fid_list.append(self.itn_nodes_dict.get(i))
+        nearest_node_fid_list = set(nearest_node_fid_list)  # 去重复
+        return nearest_node_fid_list
+
+
+    def get_nearest_node_coords(self, node_list):
         node_coords_list = []
-        nearest_node_fid = self.get_nearest_node_fid()
-        for i in nearest_node_fid:
+        for i in node_list:
             node_coords_list.append(self.road_nodes[i]['coords'])
         return node_coords_list
