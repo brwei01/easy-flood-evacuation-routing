@@ -3,7 +3,7 @@ import numpy as np
 from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
 from nearest_ITN_version_1 import IntegratedTransportNetwork, GetPointCoords
-from path_version_1 import ShortestPath
+from path_version_1 import ShortestPath, DataManipulation
 import time
 import pandas as pd
 import geopandas as gpd
@@ -71,7 +71,6 @@ def main():
 
         sp = ShortestPath(itn_file_path, dem_path)
         for i, user_itn_fid in enumerate(nearest_node_user_input_fid):
-
             for j, evacu_itn_fid in enumerate(nearest_node_evacu_points_fid):
                 path = sp.find_path(user_itn_fid, evacu_itn_fid)
                 path_link, path_geom, path_time = sp.path_to_linestring(path)

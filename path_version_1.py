@@ -2,6 +2,7 @@ import rasterio
 import networkx as nx
 import json
 from shapely.geometry import Point, LineString, MultiLineString
+import os
 
 class DataManipulation(object):
 
@@ -10,10 +11,13 @@ class DataManipulation(object):
         self.itn_file_path = itn_file_path
         self.dem_path = dem_path
 
+        #cwd = os.getcwd()
+        #self.itn_output_path = os.path.join(cwd, 'Material', 'outputs', 'modified_itnlink.json')
+
         with open(itn_file_path, 'r') as f:
             itn_data = json.load(f)
-            self.itn_nodes = itn_data['roadnodes']
-            self.itn_links = itn_data['roadlinks']
+        self.itn_nodes = itn_data['roadnodes']
+        self.itn_links = itn_data['roadlinks']
 
     def add_keys_to_itnlink_vertices(self):
         # adding colums: start_coords, end_coords, elev_diff, walking_time to itn_links
@@ -46,9 +50,8 @@ class DataManipulation(object):
                 total_time += additional_time
             details['walking_time'] = total_time
 
-
         return self.itn_links
-
+        #return self.itn_links
 
     def graph_gen(self):
         '''generate graph'''
@@ -61,21 +64,21 @@ class DataManipulation(object):
 
 class ShortestPath(object):
     def __init__(self, itn_file_path, dem_path):
-        self.itn_file_path = itn_file_path
+        self.updated_itn_file_path = itn_file_path
         self.dem_path = dem_path
 
         with open(itn_file_path, 'r') as f:
             itn_data = json.load(f)
-            self.itn_nodes = itn_data['roadnodes']
-            self.itn_links = itn_data['roadlinks']
+        self.itn_nodes = itn_data['roadnodes']
+        self.itn_links = itn_data['roadlinks']
 
-        DM = DataManipulation(self.itn_file_path, self.dem_path)
-        self.graph = DM.graph_gen()
+        dm = DataManipulation(itn_file_path, dem_path)
+        self.graph = dm.graph_gen()
 
     def find_path(self, user_itn_fid, evacu_itn_fid):
         # finding the shorest path by dijkstra:
         path = nx.dijkstra_path(self.graph, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
-        # time = nx.dijkstra_path_length(g, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
+        # time = nx.dijkstra_path_length(graph, source=user_itn_fid, target=evacu_itn_fid, weight='weight')
         return path
 
     def path_to_linestring(self, path):
