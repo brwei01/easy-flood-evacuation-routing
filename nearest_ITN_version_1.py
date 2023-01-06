@@ -47,12 +47,21 @@ class IntegratedTransportNetwork:
         nearest_node_fid_list = []
         for i in node_idx_list:
             nearest_node_fid_list.append(self.itn_nodes_dict.get(i))
-        nearest_node_fid_list = set(nearest_node_fid_list)  # 去重复
+        nearest_node_fid_list = list(set(nearest_node_fid_list))  # 去重复
         return nearest_node_fid_list
 
 
-    def get_nearest_node_coords(self, node_list):
+
+class GetPointCoords(object):
+    def __init__(self, itn_file_path, node_list):
+        self.itn_file_path = itn_file_path
+        self.node_list = node_list
+        with open(self.itn_file_path, 'r') as f:
+            input_itn = json.load(f)
+        self.road_nodes = input_itn['roadnodes']
+
+    def get_nearest_node_coords(self):
         node_coords_list = []
-        for i in node_list:
+        for i in self.node_list:
             node_coords_list.append(self.road_nodes[i]['coords'])
         return node_coords_list
