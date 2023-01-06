@@ -43,8 +43,6 @@ class UserInput(object):
                     if not point.within(island_boundary) and not point.touches(island_boundary):
                         raise OutIslandAreaError
 
-
-
                 except OutIslandAreaError:
                     print('Might be a mistake! Input location not on Island')
                     proceed = self.proceed_judgement()
