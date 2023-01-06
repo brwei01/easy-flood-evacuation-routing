@@ -12,8 +12,8 @@ class DataManipulation(object):
 
         with open(itn_file_path, 'r') as f:
             itn_data = json.load(f)
-        self.itn_nodes = itn_data['roadnodes']
-        self.itn_links = itn_data['roadlinks']
+            self.itn_nodes = itn_data['roadnodes']
+            self.itn_links = itn_data['roadlinks']
 
     def add_keys_to_itnlink_vertices(self):
         # adding colums: start_coords, end_coords, elev_diff, walking_time to itn_links
@@ -66,8 +66,8 @@ class ShortestPath(object):
 
         with open(itn_file_path, 'r') as f:
             itn_data = json.load(f)
-        self.itn_nodes = itn_data['roadnodes']
-        self.itn_links = itn_data['roadlinks']
+            self.itn_nodes = itn_data['roadnodes']
+            self.itn_links = itn_data['roadlinks']
 
         DM = DataManipulation(self.itn_file_path, self.dem_path)
         self.graph = DM.graph_gen()
