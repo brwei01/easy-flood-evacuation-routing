@@ -1,10 +1,6 @@
 import rasterio
 import numpy as np
-import geopandas as gpd
-import matplotlib.pyplot as plt
 from cartopy import crs
-from shapely.geometry import LineString
-import json
 from matplotlib_scalebar.scalebar import ScaleBar
 import geopandas
 from shapely import geometry
@@ -31,11 +27,17 @@ class MapPlotting(object):
         self.ax = 0
         self.extent = 0
 
+    # initialize the fig and ax
     def init_fig(self):
         fig = plt.figure(figsize=(3, 3), dpi=300)
         self.ax = fig.add_subplot(1, 1, 1, projection=crs.OSGB())
 
+    # load the background map
     def add_background(self):
+        """
+        Referenced from Week 8 Practical: RTree and NetworkX
+        Author: Aldo Lipani, 2022
+        """
         background = rasterio.open(self.background_path)
         back_array = background.read(1)
         bounds = background.bounds
@@ -43,12 +45,16 @@ class MapPlotting(object):
 
         palette = np.array([value for key, value in background.colormap(1).items()])
         self.background_image = palette[back_array]
+
+        # 20km x 20km of the surrounding area
+        # set user_input point as the central point
         self.display_extent = [self.user_input[0] - 10000, self.user_input[0] + 10000, self.user_input[1] - 10000,
                                self.user_input[1] + 10000]
 
         self.ax.imshow(self.background_image, origin='upper', extent=self.extent, zorder=0)
         return
 
+    # load the user location, highest point, start point and end point
     def add_points(self):
         '''evacu_point可能需要写个循环'''
         user_point = geometry.Point(self.user_input[0], self.user_input[1])
@@ -68,6 +74,7 @@ class MapPlotting(object):
 
         return
 
+    # load the north arrow
     def add_north_arrow(self):
         x, y, arrow_length = 0.02, 0.35, 0.3
         self.ax.annotate('N', xy=(x, y), xytext=(x, y - arrow_length),
@@ -76,18 +83,17 @@ class MapPlotting(object):
                          xycoords=self.ax.transAxes)
         self.ax.add_artist(ScaleBar(1, box_alpha=0.5))
 
+    # load the elevation image
     def add_elevation(self):
         self.raster_img[self.raster_img == 0] = None
         show(self.raster_img, ax=self.ax, zorder=1, cmap='YlGn', alpha=0.7, transform=self.out_transform)
 
+    # load the shortest image
     def add_path(self):
         self.final_decision_path.plot(ax=self.ax, edgecolor='green', linewidth=0.5, zorder=2, label='Path')
 
+    # show the final image
     def show(self):
-        """
-        Referenced from Week 8 Practical: RTree and NetworkX
-        Author: Aldo Lipani, 2022
-        """
         self.ax.set_extent(self.display_extent, crs=crs.OSGB())
         plt.legend(loc='lower right', fontsize=3)
         plt.show()
