@@ -38,5 +38,5 @@ class HighestElevationLocator(object):
             evacu_points.append([col, row] * out_transform)
 
         print(f'the max elevation is: {max_elev}')
-        return evacu_points
+        return evacu_points, out_image, out_transform
 

@@ -11,8 +11,8 @@ from map_plotting_version_1 import MapPlotting
 import pickle
 import rasterio
 
-def main():
 
+def main():
     # task 1
     # user input and study area generation
     try:
@@ -20,20 +20,19 @@ def main():
         print("user's location is:", user_input)
         # Plotter().show_rim(study_area)
 
-
         # task 2
         # generating cell values in study area
         t1 = time.time()
         dem_path = 'Material/elevation/SZ.asc'
-        evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
+        evacu_helper = HighestElevationLocator(dem_path, study_area)
+        evacu_points, raster_img, out_transform = evacu_helper.highest_locator()
         '''
         dem_path = 'Material/elevation/SZ.asc'
         evacu_points = HighestElevationLocator(dem_path, study_area).highest_locator()
         '''
         print("evacuation points are:", evacu_points)
         t2 = time.time()
-        print(t2-t1)
-
+        print(t2 - t1)
 
         # task 3
         # finding the nearest ITNs for user location and evacuation point
@@ -45,7 +44,6 @@ def main():
         gpc = GetPointCoords(itn_file_path, nearest_node_user_input_fid)
         nearest_node_user_input = gpc.get_nearest_node_coords()
         print('nearest itn to user location coordinates are:', nearest_node_user_input)
-
 
         nearest_node_evacu_points_fid = set()  # 去重复
         nearest_node_evacu_points_fid = []
@@ -59,8 +57,6 @@ def main():
         nearest_node_evacu_points = gpc.get_nearest_node_coords()
         print('nearest itn to evacuation location coordinates are', nearest_node_evacu_points)
 
-
-
         # Task 4
         t3 = time.time()
         # Numbers of schemes
@@ -71,7 +67,7 @@ def main():
 
         # Build compound indexes
         index = pd.MultiIndex.from_product([user_id, evacu_id])
-        path_gdf = gpd.GeoDataFrame(index=index, columns=['path_fid', 'path_geom', 'walking_time', 'start','end'])
+        path_gdf = gpd.GeoDataFrame(index=index, columns=['path_fid', 'path_geom', 'walking_time', 'start', 'end'])
 
         sp = ShortestPath(itn_file_path, dem_path)
         for i, user_itn_fid in enumerate(nearest_node_user_input_fid):
@@ -85,13 +81,11 @@ def main():
                 path_gdf.loc[(i, j), 'start'] = nearest_node_user_input[i]
                 path_gdf.loc[(i, j), 'end'] = nearest_node_evacu_points[j]
 
-
         path_gdf = path_gdf.set_geometry('path_geom')
         path_gdf = path_gdf.set_crs('EPSG:27700')
 
         min_walking_time = min(path_gdf['walking_time'])
         # this is for final plotting, plot this!
-
 
         '''
         print(f'The path is {final_decision_path["path_fid"]}')
@@ -100,8 +94,7 @@ def main():
         t4 = time.time()
         print(t4 - t3)
 
-
-        #task 5
+        # task 5
         print('After\n')
 
         background_path = 'Material/background/raster-50k_2724246.tif'
@@ -111,7 +104,6 @@ def main():
         start_itn = final_decision_path['start'].values
         end_itn = final_decision_path['end'].values
         print(end_itn)
-        raster_img, out_transform = HighestElevationLocator(dem_path, study_area).masking()
 
         mp = MapPlotting(background_path, final_decision_path, user_input, evacu_points,
                          start_itn, end_itn, raster_img, out_transform)
@@ -129,4 +121,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
