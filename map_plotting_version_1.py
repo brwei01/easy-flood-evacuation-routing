@@ -99,8 +99,8 @@ class MapPlotting(object):
 
     # show the final image
     def show(self):
-        xlim = [self.user_input[0] + 10000, self.user_input[0] - 10000]
-        ylim = [self.user_input[1] + 10000, self.user_input[1] - 10000]
+        xlim = [self.user_input[0] - 10000, self.user_input[0] + 10000]
+        ylim = [self.user_input[1] - 10000, self.user_input[1] + 10000]
         self.ax.set_xlim(xlim)
         self.ax.set_ylim(ylim)
         #self.ax.set_extent(self.display_extent, projection=crs.OSGB())
