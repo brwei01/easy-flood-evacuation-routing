@@ -12,7 +12,6 @@ class MapPlotting(object):
 
     def __init__(self, background_path, final_decision_path, user_input, evacu_points, start_itn, end_itn,
                  raster_img, out_transform):
-
         self.background_path = background_path
         self.final_decision_path = final_decision_path
         self.user_input = user_input
@@ -27,6 +26,7 @@ class MapPlotting(object):
         self.display_extent = 0
         self.ax = 0
         self.extent = 0
+        self.im = 0
 
     # initialize the fig and ax
     def init_fig(self):
@@ -44,30 +44,21 @@ class MapPlotting(object):
         back_array = background.read(1)
         bounds = background.bounds
         self.extent = [bounds.left, bounds.right, bounds.bottom, bounds.top]
-        print(self.extent)
 
         palette = np.array([value for key, value in background.colormap(1).items()])
         self.background_image = palette[back_array]
 
-        # 20km x 20km of the surrounding area
-        # set user_input point as the central point
-
-        print(self.display_extent)
-
-        self.ax.imshow(self.background_image, origin='upper', extent=self.extent, zorder=0)
-
+        self.im = self.ax.imshow(self.background_image, origin='upper', extent=self.extent, zorder=0)
 
         return
 
     # load the user location, highest point, start point and end point
     def add_points(self):
-        '''evacu_point可能需要写个循环'''
 
         for i, evacu_point in enumerate(self.evacu_points):
             evacu_point = geometry.Point(self.evacu_points[0][0], self.evacu_points[0][1])
             evacu_point = geopandas.GeoSeries([evacu_point], crs='EPSG:27700', index=['evacu_point'])
             evacu_point.plot(ax=self.ax, color='blue', markersize=0.5, zorder=3, label=f'Highest point {i + 1}')
-
 
         user_point = geometry.Point(self.user_input[0], self.user_input[1])
         start_itn = geometry.Point(self.start_itn[0][0], self.start_itn[0][1])
@@ -79,7 +70,7 @@ class MapPlotting(object):
 
         user_point.plot(ax=self.ax, color='red', markersize=3, zorder=3, label='User location')
         start_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='Start point')
-        end_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='End point')
+        end_itn.plot(ax=self.ax, color='black', markersize=1.5, zorder=3, label='End point')
 
         return
 
@@ -107,7 +98,14 @@ class MapPlotting(object):
         ylim = [self.user_input[1] - 10000, self.user_input[1] + 10000]
         self.ax.set_xlim(xlim)
         self.ax.set_ylim(ylim)
-        #self.ax.set_extent(self.display_extent, projection=crs.OSGB())
+        # self.ax.set_extent(self.display_extent, projection=crs.OSGB())
         plt.legend(loc='lower right', fontsize=3)
-        plt.show()
 
+        # add title
+        plt.title("Evacuation planning under flooding scenario of Isle of Wright",
+                  fontdict={'fontsize': 6})
+        self.im.set_cmap('RdYlGn')
+
+        # add elevation range bar
+        plt.colorbar(self.im, ax=self.ax, shrink=0.6)
+        plt.show()
