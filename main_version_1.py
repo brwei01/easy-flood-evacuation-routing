@@ -1,4 +1,3 @@
-import numpy as np
 from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
 from nearest_ITN_version_1 import IntegratedTransportNetwork, GetPointCoords
@@ -6,10 +5,7 @@ from path_version_1 import ShortestPath, DataManipulation
 import time
 import pandas as pd
 import geopandas as gpd
-from map_plotting_version_1 import MapPlotting
-import pickle
-import rasterio
-import matplotlib.pyplot as plt
+from map_controller import *
 
 
 def main():
@@ -109,11 +105,19 @@ def main():
 
         mp.init_fig()
         mp.add_background()
-        mp.add_points()
+        # mp.add_start_points()
+        # mp.add_end_points()
+        # mp.add_user_points()
+        # mp.add_evacu_points()
         mp.add_north_arrow()
-        mp.add_elevation()
-        mp.add_path()
+        # mp.add_elevation()
+        # mp.add_path()
         mp.show()
+
+        # use tkinter to control the map features
+        mp_controller = MapController(mp, background_path, final_decision_path, user_input, evacu_points,
+                                      start_itn, end_itn, raster_img, out_transform)
+        mp_controller.showwindow()
 
     except TypeError:
         pass

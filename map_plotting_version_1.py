@@ -52,27 +52,26 @@ class MapPlotting(object):
 
         return
 
-    # load the user location, highest point, start point and end point
-    def add_points(self):
-
+    def add_evacu_points(self):
         for i, evacu_point in enumerate(self.evacu_points):
             evacu_point = geometry.Point(self.evacu_points[0][0], self.evacu_points[0][1])
             evacu_point = geopandas.GeoSeries([evacu_point], crs='EPSG:27700', index=['evacu_point'])
             evacu_point.plot(ax=self.ax, color='blue', markersize=0.5, zorder=3, label=f'Highest point {i + 1}')
 
+    def add_user_points(self):
         user_point = geometry.Point(self.user_input[0], self.user_input[1])
-        start_itn = geometry.Point(self.start_itn[0][0], self.start_itn[0][1])
-        end_itn = geometry.Point(self.end_itn[0][0], self.end_itn[0][1])
-
         user_point = geopandas.GeoSeries([user_point], crs='EPSG:27700', index=['user_point'])
-        start_itn = geopandas.GeoSeries([start_itn], crs='EPSG:27700', index=['start_itn'])
-        end_itn = geopandas.GeoSeries([end_itn], crs='EPSG:27700', index=['end_itn'])
-
         user_point.plot(ax=self.ax, color='red', markersize=3, zorder=3, label='User location')
-        start_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='Start point')
-        end_itn.plot(ax=self.ax, color='black', markersize=1.5, zorder=3, label='End point')
 
-        return
+    def add_start_points(self):
+        start_itn = geometry.Point(self.start_itn[0][0], self.start_itn[0][1])
+        start_itn = geopandas.GeoSeries([start_itn], crs='EPSG:27700', index=['start_itn'])
+        start_itn.plot(ax=self.ax, color='green', markersize=1.5, zorder=3, label='Start point')
+
+    def add_end_points(self):
+        end_itn = geometry.Point(self.end_itn[0][0], self.end_itn[0][1])
+        end_itn = geopandas.GeoSeries([end_itn], crs='EPSG:27700', index=['end_itn'])
+        end_itn.plot(ax=self.ax, color='black', markersize=1.5, zorder=3, label='End point')
 
     # load the north arrow
     def add_north_arrow(self):
@@ -108,4 +107,7 @@ class MapPlotting(object):
 
         # add elevation range bar
         plt.colorbar(self.im, ax=self.ax, shrink=0.7, label='Elevation(m)')
-        plt.show()
+        plt.show(block=False)
+
+    def close(self):
+        plt.close()
