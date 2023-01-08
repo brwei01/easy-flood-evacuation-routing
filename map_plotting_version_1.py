@@ -102,10 +102,10 @@ class MapPlotting(object):
         plt.legend(loc='lower right', fontsize=3)
 
         # add title
-        plt.title("Evacuation planning under flooding scenario of Isle of Wright",
-                  fontdict={'fontsize': 6})
+        plt.title("Flood Evacuation Planning on Isle of Wright",
+                  fontdict={'fontsize': 8})
         self.im.set_cmap('RdYlGn')
 
         # add elevation range bar
-        plt.colorbar(self.im, ax=self.ax, shrink=0.6)
+        plt.colorbar(self.im, ax=self.ax, shrink=0.7, label='Elevation(m)')
         plt.show()
