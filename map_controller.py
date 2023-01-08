@@ -41,11 +41,13 @@ class MapController(object):
             mp.add_user_points()
         if 'Highest point' in selected:
             mp.add_evacu_points()
-        mp.add_north_arrow()
         if 'Elevation' in selected:
             mp.add_elevation()
         if 'Path' in selected:
             mp.add_path()
+        if 'Start point' or 'End point' or 'User input' or 'Highest point' or 'Path' in selected:
+            mp.adjust_legend()
+        mp.add_north_arrow()
         mp.show()
 
     def showwindow(self):

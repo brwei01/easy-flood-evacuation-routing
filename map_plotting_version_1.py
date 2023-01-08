@@ -34,6 +34,9 @@ class MapPlotting(object):
         self.ax = fig.add_subplot(1, 1, 1, projection=crs.OSGB())
         return
 
+    def adjust_legend(self):
+        plt.legend(loc='lower right', fontsize=3)
+
     # load the background map
     def add_background(self):
         """
@@ -98,10 +101,9 @@ class MapPlotting(object):
         self.ax.set_xlim(xlim)
         self.ax.set_ylim(ylim)
         # self.ax.set_extent(self.display_extent, projection=crs.OSGB())
-        plt.legend(loc='lower right', fontsize=3)
 
         # add title
-        plt.title("Flood Evacuation Planning on Isle of Wright",
+        plt.title("Flood Evacuation Planning on Isle of Wight",
                   fontdict={'fontsize': 8})
         self.im.set_cmap('RdYlGn')
 
