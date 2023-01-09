@@ -3,7 +3,6 @@ from rasterio.mask import mask
 from shapely.geometry import mapping
 import numpy as np
 import matplotlib
-matplotlib.use("TkAgg")
 
 # https://gis.stackexchange.com/questions/260304/extract-raster-values-within-shapefile-with-pygeoprocessing-or-gdal
 # gene, Nov 5, 2017

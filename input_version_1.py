@@ -1,7 +1,7 @@
 from shapely.geometry import Point, Polygon, MultiPolygon
 import geopandas as gpd
 import matplotlib
-matplotlib.use("TkAgg")
+
 
 
 # User Input -- returns the study area in shapely shapefile
