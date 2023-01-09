@@ -2,12 +2,9 @@ from input_version_1 import UserInput
 from elevation_version_1 import HighestElevationLocator
 from nearest_ITN_version_1 import IntegratedTransportNetwork, GetPointCoords
 from path_version_1 import ShortestPath, DataManipulation
-import time
 import pandas as pd
 import geopandas as gpd
-from map_controller import *
-import matplotlib
-matplotlib.use("TkAgg")
+from map_plotting_for_MacOS import MapPlotting
 
 
 def main():
@@ -98,27 +95,21 @@ def main():
         # putting variables required into the map plotting class
         mp = MapPlotting(background_path, final_decision_path, user_input, evacu_points,
                          start_itn, end_itn, raster_img, out_transform)
-
+        # adding features onto canvas
         mp.init_fig()
         mp.add_background()
-        # mp.add_start_points()
-        # mp.add_end_points()
-        # mp.add_user_points()
-        # mp.add_evacu_points()
+        mp.add_start_points()
+        mp.add_end_points()
+        mp.add_user_points()
+        mp.add_evacu_points()
         mp.add_north_arrow()
-        # mp.add_elevation()
-        # mp.add_path()
+        mp.add_elevation()
+        mp.add_path()
         mp.show()
-
-        # Map shown in GUI, use tkinter to control the map features
-        # may be unavailable for macOS currently, depending on python sources
-        # if cannot run please switch to main_for_macOS.py
-        mp_controller = MapController(mp, background_path, final_decision_path, user_input, evacu_points,
-                                      start_itn, end_itn, raster_img, out_transform)
-        mp_controller.showwindow()
 
     except TypeError:
         pass
+
 
 if __name__ == '__main__':
     main()
