@@ -6,6 +6,8 @@ import geopandas
 from shapely import geometry
 from matplotlib import pyplot as plt
 from rasterio.plot import show
+import matplotlib
+matplotlib.use("TkAgg")
 
 
 class MapPlotting(object):

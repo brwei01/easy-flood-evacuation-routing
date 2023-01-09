@@ -1,13 +1,9 @@
 import rasterio
-from rasterio import plot as rasterplot
 from rasterio.mask import mask
 from shapely.geometry import mapping
-from rasterio import Affine
-import geopandas as gpd
-import pandas as pd
-from shapely.geometry import Point
 import numpy as np
-import os
+import matplotlib
+matplotlib.use("TkAgg")
 
 # https://gis.stackexchange.com/questions/260304/extract-raster-values-within-shapefile-with-pygeoprocessing-or-gdal
 # gene, Nov 5, 2017

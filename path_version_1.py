@@ -2,7 +2,8 @@ import rasterio
 import networkx as nx
 import json
 from shapely.geometry import Point, LineString, MultiLineString
-import os
+import matplotlib
+matplotlib.use("TkAgg")
 
 class DataManipulation(object):
 
@@ -80,6 +81,7 @@ class ShortestPath(object):
             itn_data = json.load(f)
         self.itn_nodes = itn_data['roadnodes']
         self.itn_links = itn_data['roadlinks']
+        self.road = itn_data['road']
 
         dm = DataManipulation(itn_file_path, dem_path)
         # Generate graphs with DataManipulation
@@ -99,16 +101,36 @@ class ShortestPath(object):
         geom = []
         time = 0
         first_node = path[0]
+
+        # a str to store the road names on path.
+        path_names = ''
+        last_road = None
+        counter = 1
         for node in path[1:]:
             link_fid = self.graph.edges[first_node, node]['fid']
+
+            # get the road name that contains the individual path links
+            for road_fid, road_details in self.road.items():
+                # check if the link_fid is in the road links
+                if link_fid in road_details['links']:
+                    current_road = road_details['roadName']
+                    # if the current link is contained in the same road as the last, then not adding it
+                    if current_road != last_road:
+                        last_road = current_road
+                        # if it's the last link then do not add commas
+                        if counter == len(path)-1:
+                            continue
+                        path_names += current_road + ', '
+
             links.append(link_fid)
             time += self.graph.edges[first_node, node]['weight']
             geom.append(LineString(self.itn_links[link_fid]['coords']))
             first_node = node
+            counter += 1
 
         geom = MultiLineString(geom)
 
-        return links, geom, time
+        return links, geom, time, path_names
 
 
 

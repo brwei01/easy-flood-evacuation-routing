@@ -1,5 +1,7 @@
 from shapely.geometry import Point, Polygon, MultiPolygon
 import geopandas as gpd
+import matplotlib
+matplotlib.use("TkAgg")
 
 
 # User Input -- returns the study area in shapely shapefile
@@ -29,7 +31,7 @@ class UserInput(object):
                 print('Wrong input type, please input a numeric number')
                 proceed = self.proceed_judgement()
             else:
-                sa = Study_Area(easting, northing)
+                sa = StudyArea(easting, northing)
                 island_boundary = sa.get_island_boundary()
                 circle = sa.circle()
                 boundary_rectangle = sa.get_rectangle()
@@ -82,7 +84,7 @@ class OutIslandAreaError(Error):
 
 
 # Study area delineation
-class Study_Area(object):
+class StudyArea(object):
     def __init__(self, easting, northing):
         self.easting = easting
         self.northing = northing
@@ -103,3 +105,5 @@ class Study_Area(object):
         gdf.set_geometry(gdf['geometry'])
         gdf.set_crs('EPSG:27700')
         return gdf['geometry'].values[0]
+
+
