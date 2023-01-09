@@ -38,7 +38,7 @@ class DataManipulation(object):
             # Query cell indexes based on coordinates
             start_row_idx, start_col_idx = src.index(start_coords.x, start_coords.y)
             end_row_idx, end_col_idx = src.index(end_coords.x, end_coords.y)
-            # get elevation data at the cell being queried
+            # get elevation data at the cells being queried
             elev_start = elev_data[start_row_idx, start_col_idx]
             elev_end = elev_data[end_row_idx, end_col_idx]
             # Calculates the height difference between the start and end nodes

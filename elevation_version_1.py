@@ -19,6 +19,7 @@ class HighestElevationLocator(object):
         with rasterio.open(self.dem_path, 'r') as src:
             # msk = src.read_masks(1)
             # out_image is a Numpy masked array
+            # set values for cropped area as 0 (which is the default)
             out_image, out_transform = mask(src, geoms, crop=True, nodata=0, filled=True)
         return out_image, out_transform
 
