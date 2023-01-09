@@ -88,7 +88,7 @@ class MapPlotting(object):
 
     # load the elevation image
     def add_elevation(self):
-        self.raster_img[self.raster_img == 0] = None
+        self.raster_img[self.raster_img == 0] = None  # to get rid of the black edges
         show(self.raster_img, ax=self.ax, zorder=1, cmap='RdYlGn', alpha=0.7, transform=self.out_transform)
 
     # load the shortest image
