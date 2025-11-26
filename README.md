@@ -1,7 +1,7 @@
 # Easy Flood Emergency Planning
 ### A Python-based evacuation routing system for flood emergencies on the Isle of Wight  
-*(Based on CEGE0096 Assignment 2 Report)* :contentReference[oaicite:0]{index=0}<img width="770" height="608" alt="Picture 1" src="https://github.com/user-attachments/assets/d68d0cc7-de9e-4220-a99e-22d209f8f8a3" />
 
+<img width="770" height="608" alt="Picture 1" src="https://github.com/user-attachments/assets/d68d0cc7-de9e-4220-a99e-22d209f8f8a3" />
 
 ## 1. Overview
 This project computes the optimal walking evacuation route from a user-provided location to the highest accessible ground within 5 km.  
