@@ -3,7 +3,7 @@
 ## 1. Overview
 This project computes the optimal walking evacuation route from a user-provided location to the highest accessible ground within 5 km.  
 The system integrates elevation raster analysis, ITN (Integrated Transport Network) routing, and map visualization.
-<img width="770" height="608" alt="Picture 1" src="https://github.com/user-attachments/assets/d68d0cc7-de9e-4220-a99e-22d209f8f8a3" />
+<img width="90%" alt="Picture 1" src="https://github.com/user-attachments/assets/d68d0cc7-de9e-4220-a99e-22d209f8f8a3" />
 
 ## 2. Features
 - Validates user input and ensures location lies on the island  
